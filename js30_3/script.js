@@ -1,4 +1,4 @@
-let player = 'X', stepCount = 0; winner = false;
+let player = 'X', stepCount = 0; winner = false; gamesAmount = 0; winNumberX = 0; winNumberO = 0; draw = 0;
 let winCombinations = [
     [1,2,3],
     [1,4,7],
@@ -16,6 +16,10 @@ const gameBlock = document.querySelector(".game"),
       gameTitle= document.querySelector(".game-title"),
       gameItem = document.querySelectorAll(".game_item"),
       clearBtn = document.querySelector(".clear");
+      gamesCount = document.querySelector(".gamesAmount");
+      winX = document.querySelector(".winX");
+      winO = document.querySelector(".winO");
+      drawCount = document.querySelector(".draw");
 
 for (let i = 0; i < gameItem.length; i++) {
     gameItem[i].addEventListener('click', currentChoice)
@@ -39,11 +43,28 @@ function currentChoice(e) {
             }
         }
         stepCount++;
-        if (stepCount===9) {
+        if (stepCount===9 && winner === false) {
+            gamesAmount++;
+            draw++;
             gameTitle.innerText ="Ничья";
+            gamesCount.innerText ="Количество игр " + gamesAmount;
+            drawCount.innerText = "Количество ничьих = " + draw;
+            localStorage.setItem('gamesAmount', gamesAmount);
+            localStorage.setItem('winner', "X+O");
+            localStorage.setItem('draw', draw);
         }
         else if (winner === true){
             gameTitle.innerText ="Победил игрок " + player + "\nна " + stepCount + " ходу игры";
+            gamesAmount++;
+            gamesCount.innerText ="Количество игр = " + gamesAmount;
+            player === 'X' ? (winNumberX++) : (winNumberO++);
+            winX.innerText = "Количество побед Х игрока = " + winNumberX;
+            winO.innerText = "Количество побед O игрока = " + winNumberO;
+            localStorage.setItem('gamesAmount', gamesAmount);
+            localStorage.setItem('winner', player);
+            localStorage.setItem('winNumberX', winNumberX);
+            localStorage.setItem('winNumberO', winNumberO);
+            localStorage.setItem('draw', draw);
         }
         else if (winner === false) {
             if (player == 'X') {
